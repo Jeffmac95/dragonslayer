@@ -1,0 +1,1 @@
+Just a text-based adventure game I started on the fly one morning. I always enjoyed old-style games like that, so thought it would be fun to make my own, and also get more practice writing code.
