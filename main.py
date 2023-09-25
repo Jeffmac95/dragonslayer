@@ -1,5 +1,6 @@
 from os import system
 import time
+import random
 
 class Text:
     RESET = "\033[0m"
@@ -11,23 +12,6 @@ name = ''
 weapons = []
 tools = []
 
-def title():
-    global name
-
-    system("cls")
-    print(f"{Text.RED}***WELCOME TO DYSTOPIA***{Text.RESET}")
-    print(f"{Text.CYAN}By: Jeff MacPherson{Text.RESET}")
-    time.sleep(4)
-    system("cls")
-    print("Start by giving your character a name.")
-    name = input("Enter your name: ")
-    time.sleep(6)
-    
-
-def get_current_inventory():
-    print(weapons, tools)
-
-
 def input_prompt(prompt, valid_res):
     while True:
         user_input = input(prompt).lower()
@@ -36,6 +20,48 @@ def input_prompt(prompt, valid_res):
         else:
             print("Did you make a typo? Try again.")
             time.sleep(3)
+
+
+def fight(player_hp, target_hp):
+    print("********************")
+    while player_hp > 0 and target_hp > 0:
+        time.sleep(3)
+        player_attack = random.randint(0, 1)
+        target_hp -= player_attack
+        print("\n")
+        print(f">You hit {player_attack} damage. Target has {target_hp} health left.")
+        print("\n")
+
+        if target_hp <= 0:
+            print("You won the fight.")
+            print("\n")
+            print("********************")
+            time.sleep(2)
+            return True
+        
+        time.sleep(3)
+        target_attack = random.randint(0, 1)
+        player_hp -= target_attack
+        print(f">The target hits and does {target_attack} damage. You have {player_hp} health left.")
+        print("\n")
+
+        if player_hp <= 0:
+            print("You lost the fight.")
+            print("********************")
+            time.sleep(2)
+            return False
+        
+
+def get_current_inventory():
+    print(weapons, tools)
+
+
+def title():
+    system("cls")
+    print(f"{Text.RED}***WELCOME TO DYSTOPIA***{Text.RESET}")
+    print(f"{Text.CYAN}By: Jeff MacPherson{Text.RESET}")
+    time.sleep(5)
+    system("cls")
 
 
 def starting_point():
@@ -87,14 +113,15 @@ def downstairs():
         else:
             print("You frantically run out your frontdoor")
             time.sleep(3)
+            system("cls")
             outside()
 
 
 def outside():
-
-    print("You go outside and everything is burnt black and there's no sign of anyone around...")
+    print("You go outside. There's no sign of the sun.. or people, and everything is burnt black.")
     time.sleep(2)
-    print("You look to the left and see your neighbours door ajar.")
+    print("You look to the left and see your neighbours door wide-open.")
+    time.sleep(2)
     print("You look to the right and see smoke burning from the town square.")
     time.sleep(2)
     direction = input_prompt("Do you\nGo >left and check on your neighbour?\n-or-\nGo >right and head straight for the city?\nType *left* or *right*: ", ["left", "right"])
@@ -115,7 +142,13 @@ def neighbours_house():
     if check_noise == 'y':
         print("You head up the creaky stairs...")
         time.sleep(4)
-        print(f"{Text.RED}A Zombie appeared!{Text.RESET}\nTime to fight! or you can try to run.")
+        print(f"{Text.RED}A Zombie appeared!{Text.RESET}\nTime to fight!")
+        if fight(player_hp = 5, target_hp = 3):
+            print("You leave the house and continue on to the town-square.")
+            time.sleep(3)
+            town_square()
+        else:
+            print("Run!")
     else:
         print("You turn around and head towards the town square instead.")
         time.sleep(4)
