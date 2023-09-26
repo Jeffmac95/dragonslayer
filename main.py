@@ -62,8 +62,10 @@ def get_current_inventory():
 
 
 def title():
+    global name
+
     terminal_width = os.get_terminal_size().columns
-    game_title = "*** MY FIRST TEXT-BASED ADVENUTRE GAME ***"
+    game_title = "*** D R A G O N   S L A Y E R ***"
     game_author = "By: Jeff MacPherson"
     game_title_padding = int((terminal_width - len(game_title)) / 2)
     game_author_padding = int((terminal_width - len(game_author)) / 2)
@@ -75,6 +77,9 @@ def title():
     print(" " * game_author_padding + f"{Text.BLUE}{game_author}{Text.RESET}")
     time.sleep(5)
     os.system("cls")
+    
+    print("Enter your name: ")
+    name = input("> ")
 
 
 def starting_point():
@@ -82,6 +87,7 @@ def starting_point():
     global tools
 
     os.system("cls")
+    time.sleep(3)
     print("You wake up, and oddly its still dark outside. The smell of smoke is in the air... \nYou hop out of bed.")
     time.sleep(3)
 
@@ -112,10 +118,11 @@ def downstairs():
         direction = input_prompt("Go >left to search the kitchen first for possible supplies?\n-or-\nGo >right in a panic and head straight outside to assess the situation?\nType *left* or *right*: ", ["left", "right"])
         if direction == "left":
             time.sleep(2)
-            take_matchbox = input_prompt("You look around your kitchen and see matches laying on the kitchen table.\nType *take* to take the matchbox.\n:", ["take"])
+            take_matchbox = input_prompt("You look around your kitchen and see a matchbox laying on the kitchen table.\nTo take the matchbox\nType *take*: ", ["take"])
             if take_matchbox == "take":
                 tools.append("matchbox")
                 print(f"{Text.MAGENTA}>Matchbox was added to your inventory.{Text.RESET}")
+                time.sleep(2)
                 print(f"Type {Text.YELLOW}inv{Text.RESET} at anytime to see your current inventory.")
                 time.sleep(3)
                 go_outside = input_prompt("If you'd like to head outside now type *go*: ", ["go"])
@@ -162,7 +169,7 @@ def neighbours_house():
         time.sleep(4)
         print(f"{Text.RED}A Zombie appeared!{Text.RESET}\nTime to fight!")
         if fight(player_hp = 5, target_hp = 3):
-            print("You leave the house and continue on to the town-square.")
+            print("You run out of the house and head for the town-square.")
             time.sleep(3)
             town_square()
         else:
@@ -174,7 +181,72 @@ def neighbours_house():
 
 
 def town_square():
-    print("You arrive in town square. Everything's charred, with some buildings still slightly burning. And no sign of any people around.")
+    global tools
 
+    print("You arrive in town square.")
+    time.sleep(2)
+    print("Everything's charred, with some buildings still slightly burning. And no sign of any people around.")
+    time.sleep(5)
+    print("You suddenly realize the castle lights are on straight ahead.")
+    time.sleep(2)
+    print("But before heading to the castle, you might want to look around first for a lightsource to get across the bridge safely.")
+    time.sleep(5)
+    direction = input_prompt("You look to the >left and see a path with a Lumber Shop.\nYou look to the >right and see a path with an abandoned General Store.\nType *left* or *right*: ", ['left', 'right'])
+    if direction == "left":
+        if tools[-1] != "key":
+            print("The door is locked. Maybe I should look for a key.")
+            time.sleep(2)
+            print("You walk over to the right to check out the General Store.")
+            time.sleep(4)
+            general_store()
+        else:
+            lumber_shop()
+    else:
+        general_store()
+
+
+def general_store():
+    global tools
+
+    print("You arrive at the General Store and immediately notice a vial containing red liquid on the shelf behind the front-counter.")
+    take_potion = input_prompt("Take the >Health Potion?\nType y or n: ", ['y', 'n'])
+    if take_potion == 'y':
+        tools.append("health potion")
+        print(f"{Text.MAGENTA}>Health Potion was added to your inventory.{Text.RESET}")
+        time.sleep(3)
+    else:
+        print("Ok. If you dont think you'll need it.")
+        time.sleep(2)
+    print("You look around and notice a trap-door that leads to the basement.")
+    general_store_basement = input_prompt("To go to the basement type *go*: ", ["go"])
+    if general_store_basement == "go":
+        print("You head down to the basement and look around for anything useful...")
+        time.sleep(6)
+        print("You find a key!")
+        time.sleep(2)
+        tools.append("key")
+        print(f"{Text.MAGENTA}>Key was added to your inventory.{Text.RESET}")
+        time.sleep(2)
+    print("You head back upstairs and out of the General Store to try the key at the lumber shop.")
+    time.sleep(4)
+    lumber_shop()
+
+
+def lumber_shop():
+    global tools
+
+    print("You arrive at the Lumber Shop. If you have a key the door should open.")
+    print(f"Remeber, you can type {Text.YELLOW}inv{Text.RESET} at any time to see your current inventory.")
+    shall_you_pass = input_prompt("Type *unlock*: ", ["unlock"])
+    print("You turn the key.")
+    time.sleep(3)
+    if shall_you_pass == "unlock":
+        if tools[-1] == "key":
+            print("You enter the Lumber Shop.")
+        else:
+            print("It doesnt work, back to the General Store you go.")
+            time.sleep(4)
+            general_store()
 
 title()
+starting_point()
