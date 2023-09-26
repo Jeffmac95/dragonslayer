@@ -27,10 +27,16 @@ def input_prompt(prompt, valid_res):
 
 
 def fight(player_hp, target_hp):
+    global weapons
+
     print("********************")
     while player_hp > 0 and target_hp > 0:
         time.sleep(3)
-        player_attack = random.randint(0, 1)
+        if "axe" in weapons:
+            player_attack = random.randint(0, 2)
+        else:
+            player_attack = random.randint(0, 1)
+        player_attack = min(player_attack, target_hp)
         target_hp -= player_attack
         print("\n")
         print(f">You hit {player_attack} damage. Target has {target_hp} health left.")
@@ -61,7 +67,7 @@ def get_current_inventory():
     time.sleep(3)
 
 
-def title():
+def starting_point():
     global name
 
     terminal_width = os.get_terminal_size().columns
@@ -80,13 +86,15 @@ def title():
     
     print("Enter your name: ")
     name = input("> ")
+    os.system("cls")
+
+    bedroom()
 
 
-def starting_point():
+def bedroom():
     global weapons
     global tools
 
-    os.system("cls")
     time.sleep(3)
     print("You wake up, and oddly its still dark outside. The smell of smoke is in the air... \nYou hop out of bed.")
     time.sleep(3)
@@ -101,10 +109,11 @@ def starting_point():
         print(f"Type {Text.YELLOW}inv{Text.RESET} at anytime to see your current inventory.")
         time.sleep(2)
     else:
-        print(f"You should take the axe...\n{Text.MAGENTA}>Axe was added to your inventory.{Text.RESET}")
+        print("Ok. If you dont think you'll need it.")
+        print("You head downstairs.")
         time.sleep(2)
-        print(f"Type {Text.YELLOW}inv{Text.RESET} at anytime to see your current inventory.")
-        time.sleep(2)
+        downstairs()
+
     
     go_downstairs = input_prompt("You should head downstairs now.\nType *go*: ", ["go"])
     if go_downstairs == "go":
@@ -118,32 +127,31 @@ def downstairs():
         direction = input_prompt("Go >left to search the kitchen first for possible supplies?\n-or-\nGo >right in a panic and head straight outside to assess the situation?\nType *left* or *right*: ", ["left", "right"])
         if direction == "left":
             time.sleep(2)
-            take_matchbox = input_prompt("You look around your kitchen and see a matchbox laying on the kitchen table.\nTo take the matchbox\nType *take*: ", ["take"])
-            if take_matchbox == "take":
+            take_matchbox = input_prompt("You look around your kitchen and see a matchbox laying on the kitchen table.\nDo you take the matchbox?\nType y or n: ", ['y', 'n'])
+            if take_matchbox == 'y':
                 tools.append("matchbox")
                 print(f"{Text.MAGENTA}>Matchbox was added to your inventory.{Text.RESET}")
                 time.sleep(2)
                 print(f"Type {Text.YELLOW}inv{Text.RESET} at anytime to see your current inventory.")
                 time.sleep(3)
-                go_outside = input_prompt("If you'd like to head outside now type *go*: ", ["go"])
+                go_outside = input_prompt("You should head outside now\nType *go*: ", ["go"])
                 if go_outside == "go":
                     time.sleep(3)
-                    os.system("cls")
                     outside()
-                else:
-                    just_go_outside = input_prompt("What now?\nType *go* to go outside.", ["go"])
-                    if just_go_outside == "go":
-                        time.sleep(3)
-                        outside()
+            else:
+                print("Ok. If you dont think you'll need it.")
+                print("You head for your front-door to go check outside.")
+                time.sleep(2)
+                outside()
+                time.sleep(4)
         else:
             print("You frantically run out your frontdoor")
             time.sleep(3)
-            os.system("cls")
             outside()
 
 
 def outside():
-    print("You go outside. The sky is filled with smoke, with no sign of the sun.. or people. The air smells of burning wood and everything is scortched and black.")
+    print("You step outside. The sky is filled with smoke, with no sign of the sun.. or people. The air smells of burning wood and everything is scortched and black.")
     time.sleep(2)
     print("You look to the left and see your neighbours door wide-open.")
     time.sleep(2)
@@ -159,6 +167,9 @@ def outside():
 
 
 def neighbours_house():
+    global weapons
+    weapons.append("axe")
+
     print("You open the door to your neighbours house, it smells horrible in here!")
     time.sleep(2)
     print("You hear a ruffling noise coming from upstairs...")
@@ -193,7 +204,7 @@ def town_square():
     time.sleep(5)
     direction = input_prompt("You look to the >left and see a path with a Lumber Shop.\nYou look to the >right and see a path with an abandoned General Store.\nType *left* or *right*: ", ['left', 'right'])
     if direction == "left":
-        if tools[-1] != "key":
+        if len(tools) == 0 or tools[-1] != "key":
             print("The door is locked. Maybe I should look for a key.")
             time.sleep(2)
             print("You walk over to the right to check out the General Store.")
@@ -247,6 +258,3 @@ def lumber_shop():
             print("It doesnt work, back to the General Store you go.")
             time.sleep(4)
             general_store()
-
-title()
-starting_point()
