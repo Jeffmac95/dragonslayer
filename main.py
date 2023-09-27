@@ -40,7 +40,6 @@ def fight(player_hp, target_hp):
         target_hp -= player_attack
         print("\n")
         print(f">You hit {player_attack} damage. Target has {target_hp} health left.")
-        # print("\n")
 
         if target_hp <= 0:
             print("You won the fight.")
@@ -104,15 +103,13 @@ def bedroom():
         time.sleep(1)
         print(f"Type {Text.YELLOW}inv{Text.RESET} at anytime to see your current inventory.")
         time.sleep(2)
+        go_downstairs = input_prompt(f"You should head downstairs now.\nType {Text.GREEN}go{Text.RESET}: ", ["go"])
+        if go_downstairs == "go":
+            time.sleep(2)
+            downstairs()
     else:
         print("Ok. If you dont think you'll need it.")
         print("You head downstairs.")
-        time.sleep(2)
-        downstairs()
-
-    #move this inside of takeaxe?
-    go_downstairs = input_prompt(f"You should head downstairs now.\nType {Text.GREEN}go{Text.RESET}: ", ["go"])
-    if go_downstairs == "go":
         time.sleep(2)
         downstairs()
 
@@ -164,6 +161,8 @@ def outside():
         neighbours_house()
     else:
         time.sleep(2)
+        print("You head for the town square.")
+        time.sleep(5)
         town_square()
 
 
@@ -207,7 +206,7 @@ def town_square():
             print("The door is locked. Maybe I should look for a key.")
             time.sleep(2)
             print("You walk over to the right to check out the General Store.")
-            time.sleep(4)
+            time.sleep(5)
             general_store()
         else:
             lumber_shop()
@@ -244,6 +243,7 @@ def general_store():
 
 def lumber_shop():
     global tools
+    global weapons
 
     print("You arrive at the Lumber Shop.")
     time.sleep(2)
@@ -257,7 +257,25 @@ def lumber_shop():
             print(f"{Text.CYAN}*click*{Text.RESET}")
             time.sleep(2)
             print("You enter the Lumber Shop.")
+            time.sleep(3)
+            print("You look around for anything you could use as a torch.")
+            time.sleep(4)
+            print("You notice a backroom but its locked shut.")
+            if "axe" in weapons:
+                print("Maybe you can use your axe to try and break the lock.")
+                backroom = input_prompt(f">Swing your axe.\nType {Text.GREEN}swing{Text.RESET}")
+                if backroom == "swing":
+                    time.sleep(3)
+                    print("The door flys open!")
+                    time.sleep(2)
+                    print("The room is smokey and dark but you manage to make it to the window to open the curtain.")
+                    time.sleep(2)
+                    #TODO add sword to kill dragon
+            else:
+                print("Maybe you should have picked up the axe...Back to the beginning you go!")
+                time.sleep(5)
+                bedroom()
         else:
-            print("It doesnt work, back to the General Store you go.")
+            print("It doesnt work. Back to the General Store you go.")
             time.sleep(4)
             general_store()
