@@ -34,6 +34,8 @@ def fight(player_hp, target_hp):
         time.sleep(3)
         if "axe" in weapons:
             player_attack = random.randint(0, 2)
+        elif "sword" in weapons:
+            player_attack = random.randint(0, 5)
         else:
             player_attack = random.randint(0, 1)
         player_attack = min(player_attack, target_hp)
@@ -63,7 +65,7 @@ def fight(player_hp, target_hp):
 
 def get_current_inventory():
     print(f"{Text.YELLOW}Weapons: {weapons}\nItems: {tools}{Text.RESET}")
-    time.sleep(3)
+    time.sleep(1)
 
 
 def starting_point():
@@ -117,33 +119,39 @@ def bedroom():
 def downstairs():
         print("You're downstairs and its deadly quiet... You see your frontdoor ajar.\nDo you:")
         time.sleep(2)
-        direction = input_prompt(f">Go {Text.GREEN}left{Text.RESET} to search the kitchen first for possible supplies?\n-or-\n>Go {Text.GREEN}right{Text.RESET} in a panic and head straight outside to assess the situation?\nType {Text.GREEN}left {Text.RESET}or {Text.GREEN}right{Text.RESET}: ", ["left", "right"])
+        print(f">Go {Text.GREEN}left{Text.RESET} to search the kitchen first for possible supplies?\n-or-\n>Go {Text.GREEN}right{Text.RESET} in a panic and head straight outside to assess the situation?")
+        direction = input_prompt(f"Type {Text.GREEN}left {Text.RESET}or {Text.GREEN}right{Text.RESET}: ", ["left", "right"])
         if direction == "left":
+            print("You head into the kitchen.")
             time.sleep(2)
-            print("You look around your kitchen and see a matchbox laying on the kitchen table.")
-            time.sleep(2)
-            take_matchbox = input_prompt(f">Do you take the matchbox?\nType {Text.GREEN}y{Text.RESET} or {Text.GREEN}n{Text.RESET}: ", ['y', 'n'])
-            if take_matchbox == 'y':
-                tools.append("matchbox")
-                print(f"{Text.MAGENTA}>Matchbox was added to your inventory.{Text.RESET}")
-                time.sleep(2)
-                print(f"Type {Text.YELLOW}inv{Text.RESET} at anytime to see your current inventory.")
-                time.sleep(3)
-                print("You should head outside now.")
-                go_outside = input_prompt(f"Type {Text.GREEN}go{Text.RESET}: ", ["go"])
-                if go_outside == "go":
-                    time.sleep(3)
-                    outside()
-            else:
-                print("Ok. If you dont think you'll need it.")
-                print("You head for your front-door to go check outside.")
-                time.sleep(2)
-                outside()
-                time.sleep(4)
+            kitchen()
         else:
             print("You frantically run out your frontdoor")
             time.sleep(3)
             outside()
+
+
+def kitchen():
+        print("You look around your kitchen and see a matchbox laying on the kitchen table.")
+        time.sleep(2)
+        take_matchbox = input_prompt(f">Do you take the matchbox?\nType {Text.GREEN}y{Text.RESET} or {Text.GREEN}n{Text.RESET}: ", ['y', 'n'])
+        if take_matchbox == 'y':
+            tools.append("matchbox")
+            print(f"{Text.MAGENTA}>Matchbox was added to your inventory.{Text.RESET}")
+            time.sleep(2)
+            print(f"Type {Text.YELLOW}inv{Text.RESET} at anytime to see your current inventory.")
+            time.sleep(3)
+            print("You should head outside now.")
+            go_outside = input_prompt(f"Type {Text.GREEN}go{Text.RESET}: ", ["go"])
+            if go_outside == "go":
+                time.sleep(3)
+                outside()
+        else:
+            print("Ok. If you dont think you'll need it.")
+            print("You head for your front-door to go check outside.")
+            time.sleep(2)
+            outside()
+            time.sleep(4)
 
 
 def outside():
@@ -154,7 +162,7 @@ def outside():
     print("You look to the right and see smoke burning from the town square.")
     time.sleep(2)
     print(f"Do you:\n>Go {Text.GREEN}left{Text.RESET} and check on your neighbour?\n-or-\n>Go {Text.GREEN}right{Text.RESET} and head straight for the city?")
-    time.sleep(4)
+    time.sleep(2)
     direction = input_prompt(f"Type {Text.GREEN}left{Text.RESET} or {Text.GREEN}right{Text.RESET}: ", ["left", "right"])
     if direction == "left":
         time.sleep(2)
@@ -182,6 +190,7 @@ def neighbours_house():
             town_square()
         else:
             print("Run!")
+            town_square()
     else:
         print("You turn around and head towards the town square instead.")
         time.sleep(4)
@@ -191,27 +200,37 @@ def neighbours_house():
 def town_square():
     global tools
 
-    print("You arrive in town square.")
-    time.sleep(2)
-    print("Everything's charred, with some buildings still slightly burning. And no sign of any people around.")
-    time.sleep(5)
-    print("You suddenly realize the castle lights are on straight ahead.")
-    time.sleep(2)
-    print("But before heading to the castle, you might want to look around first for a lightsource to get across the bridge safely.")
-    time.sleep(5)
-    print(f">You look {Text.GREEN}left{Text.RESET} and see a path with a Lumber Shop.\n>You look to the {Text.GREEN}right{Text.RESET} and see a path with an abandoned General Store.")
-    direction = input_prompt(f"Type {Text.GREEN}left{Text.RESET} or {Text.GREEN}right{Text.RESET}: ", ['left', 'right'])
-    if direction == "left":
-        if "key" not in tools:
-            print("The door is locked. Maybe I should look for a key.")
-            time.sleep(2)
-            print("You walk over to the right to check out the General Store.")
-            time.sleep(5)
-            general_store()
-        else:
-            lumber_shop()
+    if "matchbox" and "torch" in tools:
+        time.sleep(4)
+        print("You arrive back in the town square with the proper stuff this time.")
+        print(">You light the torch and make your way across the bridge")
+        time.sleep(2)
+        the_bridge()
     else:
-        general_store()
+        print("You arrive in town square.")
+        time.sleep(2)
+        print("Everything's charred, with some buildings still slightly burning. And no sign of any people around.")
+        time.sleep(5)
+        print("You suddenly realize the castle lights are on straight ahead.")
+        time.sleep(2)
+        print("But before heading to the castle, you might want to look around first for a lightsource to get across the bridge safely.")
+        time.sleep(5)
+        print(f">You look {Text.GREEN}left{Text.RESET} and see a path with a Lumber Shop.\n>You look to the {Text.GREEN}right{Text.RESET} and see a path with an abandoned General Store.")
+        direction = input_prompt(f"Type {Text.GREEN}left{Text.RESET} or {Text.GREEN}right{Text.RESET}: ", ['left', 'right'])
+        if direction == "left":
+            if "key" not in tools:
+                time.sleep(1)
+                print("The door is locked. Maybe I should look for a key.")
+                time.sleep(2)
+                print("You walk over to the right to check out the General Store.")
+                time.sleep(5)
+                general_store()
+            else:
+                lumber_shop()
+        else:
+            print("You make your way to the General Store.")
+            time.sleep(4)
+            general_store()
 
 
 def general_store():
@@ -248,6 +267,7 @@ def lumber_shop():
     print("You arrive at the Lumber Shop.")
     time.sleep(2)
     print("If you have a key the door should open.")
+    time.sleep(2)
     print(f"Remeber, you can type {Text.YELLOW}inv{Text.RESET} at any time to see your current inventory.")
     shall_you_pass = input_prompt(f"Type {Text.GREEN}unlock{Text.RESET}: ", ["unlock"])
     print("You turn the key...")
@@ -258,24 +278,74 @@ def lumber_shop():
             time.sleep(2)
             print("You enter the Lumber Shop.")
             time.sleep(3)
-            print("You look around for anything you could use as a torch.")
+            print("You look around for a stick to act as a torch.")
             time.sleep(4)
-            print("You notice a backroom but its locked shut.")
-            if "axe" in weapons:
-                print("Maybe you can use your axe to try and break the lock.")
-                backroom = input_prompt(f">Swing your axe.\nType {Text.GREEN}swing{Text.RESET}")
-                if backroom == "swing":
-                    time.sleep(3)
-                    print("The door flys open!")
-                    time.sleep(2)
-                    print("The room is smokey and dark but you manage to make it to the window to open the curtain.")
-                    time.sleep(2)
-                    #TODO add sword to kill dragon
-            else:
-                print("Maybe you should have picked up the axe...Back to the beginning you go!")
-                time.sleep(5)
-                bedroom()
+            print("You find a decent looking stick.")
+            time.sleep(1)
+            tools.append("torch")
+            print(f"{Text.MAGENTA}>Torch was added to your inventory.{Text.RESET}")
+            time.sleep(2)
+            print("You head back to the town sqaure to make your way across the bridge.")
+            time.sleep(4)
+            town_fountain()
         else:
             print("It doesnt work. Back to the General Store you go.")
             time.sleep(4)
             general_store()
+
+def town_fountain():
+    global weapons
+    global tools
+
+    print("You arrive back in the town square and make your way to the bridge that leads to the castle.")
+    time.sleep(2)
+    print("But something catches your eye in the fountain, in the middle of the square.")
+    time.sleep(2)
+    print("Its a sword!")
+    time.sleep(1)
+    weapons.append("sword")
+    print(f"{Text.MAGENTA}>Sword was added to your inventory.{Text.RESET}")
+    time.sleep(2)
+    print("You notice strange writing on the side of the blade but cant understand the language. And on the other side, a picture of a dragon?")
+    time.sleep(1)
+    print("You feel a lot stronger with this.")
+    time.sleep(2)
+    if "matchbox" in tools:
+        print("You make your way towards the bridge")
+        time.sleep(5)
+        the_bridge()
+    else:
+        print("You have nothing to light your stick with.\nBack to your house to check the kitchen!")
+        time.sleep(5)
+        kitchen()
+
+
+
+def the_bridge():
+    global weapons
+    global tools
+    tools.append("matchbox")
+    tools.append("torch")
+    weapons.append("sword")
+
+    print("You start making your way across the bridge.")
+    time.sleep(2)
+    print("Its quiet and still pretty dark even with your torch lit.")
+    time.sleep(3)
+    print(f"{Text.RED}A Zombie appears!{Text.RESET}\nTime to fight!")
+    time.sleep(2)
+    if fight(player_hp=5, target_hp=4):
+        print("You continue your way across the bridge.")
+        time.sleep(4)
+        print("Finally you arrive at the castle and it smells horrible.\nYou make your way inside.")
+        the_castle()
+    else:
+        print("You run back to recooperate in the town sqaure.")
+        time.sleep(3)
+        town_square()
+
+def the_castle():
+    print("You walk inside the castle and notice a skeleton of what use to be a king, sitting on a charred throne.")
+
+
+starting_point()
