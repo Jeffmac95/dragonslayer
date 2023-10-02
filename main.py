@@ -11,6 +11,7 @@ class Text:
     BLUE = "\033[34m"
     CYAN = "\033[96m"
 
+name = ''
 weapons = []
 tools = []
 target = []
@@ -81,6 +82,10 @@ def fight(player_hp, target_hp):
             print("********************")
             sleep(2)
             return False
+
+        #if "health potion" in tools and player_hp <= 5:
+            #print(">You drink the health potion")
+            #player_hp += n
         
 
 def get_current_inventory():
@@ -104,6 +109,8 @@ def starting_point():
     print(" " * game_author_padding + f"{Text.BLUE}{game_author}{Text.RESET}")
     sleep(5)
     os.system("cls")
+
+    name = input("Enter your characters name: ")
 
     bedroom()
 
@@ -350,10 +357,6 @@ def the_bridge():
     global weapons
     global tools
     global target
-    weapons.append("axe")
-    weapons.append("sword")
-    tools.append("matchbox")
-    tools.append("torch")
 
     print("You start making your way across the bridge.")
     sleep(2)
@@ -377,6 +380,7 @@ def the_bridge():
 def the_castle():
     global weapons
     global team
+    weapons.append("axe")
 
     print("You walk inside the castle and notice a skeleton of what use to be a king, sitting on a charred throne.")
     sleep(2)
@@ -384,7 +388,7 @@ def the_castle():
     sleep(2)
     print("You make your way down the spiral staircase towards the dungeons...")
     sleep(5)
-    print("You arrive in the jail cells of the castle.\nDo you walk down the corridor to explore the cells or go to the bottom floor.")
+    print("You arrive in the middle floor. Appears to be the prison of the castle.\nDo you: walk down the corridor to explore the cells or go to the bottom floor.")
     direction = input_prompt(f"Type {Text.GREEN}explore{Text.RESET} or {Text.GREEN}go{Text.RESET}: ", ["explore", "go"])
     if direction == "explore":
         print("You make your way down the hallway looking in the cells...")
@@ -393,26 +397,33 @@ def the_castle():
         sleep(1)
         print("You attempt to talk to the person whos sleeping in one of the cells.")
         sleep(2)
-        print("The stranger tells you about the dragon that came to the town and burned everything and almost everyone...\nAlmost everyone that survived made underground bunkers 10 feet under the dirt.\nHe also mentions the dragon is locked in the basement of the castle but may be hard to beat by yourself.")
-        sleep(4)
+        print("He wakes up and turns to you and you tell him your name.")
+        sleep(3)
+        print("The stranger tells you hes been a prisoner for over 5 years now. And several weeks ago a dragon came to the town and burned everything and almost everyone...\nand that any survivers made underground bunkers 10 feet under the dirt.")
+        sleep(3)
+        print("He also mentions the dragon was captured by some of the kings men and is locked in the basement of the castle but may be hard to beat by yourself.")
+        sleep(6)
         if "axe" in weapons:
-            print("Maybe you can free the prisoner with a swing of your axe.")
-            print(f"{Text.CYAN}>You swing your axe and free the prisoner!{Text.RESET}")
-            print("The prisoner thanks you for freeing him.\nHe's willing to help you fight the dragon if you would give him your axe...")
-            sleep(1)
-            print("Do you give your >Axe to the stranger?")
-            give_axe = input_prompt(f"Type {Text.GREEN}y{Text.RESET} or {Text.GREEN}n{Text.RESET}: ", {'y', 'n'})
-            if give_axe == 'y':
-                weapons.remove("axe")
-                print(f"{Text.RED}>You give the stranger your axe.{Text.RESET}")
-                team.append("prisoner")
-                print(f"{Text.YELLOW}>The prisoner joins your team.{Text.RESET}")
-                sleep(2)
-                print("You say to the prisoner; Lets head downstairs friend.")
-                sleep(4)
-                battle_room()
+            print("Maybe you can free the prisoner with a swing of your axe?")
+            free_prisoner = input_prompt(f"Type {Text.GREEN}y{Text.RESET} or {Text.GREEN}n{Text.RESET}: ", ['y', 'n'])
+            if free_prisoner == 'y':
+                print(f"{Text.CYAN}>You swing your axe and free the prisoner!{Text.RESET}")
+                print("The prisoner thanks you for freeing him.\nHe's willing to help you fight the dragon if you would give him your axe...")
+                sleep(1)
+                print("Do you give your >Axe to the stranger?")
+                give_axe = input_prompt(f"Type {Text.GREEN}y{Text.RESET} or {Text.GREEN}n{Text.RESET}: ", {'y', 'n'})
+                if give_axe == 'y':
+                    weapons.remove("axe")
+                    print(f"{Text.RED}>You give the stranger your axe.{Text.RESET}")
+                    team.append("prisoner")
+                    print(f"{Text.YELLOW}>The prisoner joins your team.{Text.RESET}")
+                    sleep(2)
+                    print("You say to the prisoner; Lets head downstairs friend.")
+                    sleep(4)
+                    battle_room()
             else:
-                print("You dont trust the prisoner.\nHe thanks you for freeing him and makes his way upstairs.")
+                print("You dont trust the prisoner.")
+                sleep(2)
                 print("You head towards the staircase to go downstairs.")
                 sleep(4)
                 battle_room()
@@ -421,7 +432,7 @@ def the_castle():
             sleep(4)
             battle_room()
     else:
-        print("You make your way down the spiral staircase.")
+        print("You head straight to the sprial staircase to make your to the dungeons in the basemnet.")
         sleep(4)
         battle_room()
 
@@ -451,4 +462,4 @@ def battle_room():
         sleep(2)
         quit()
 
-the_bridge()
+starting_point()
