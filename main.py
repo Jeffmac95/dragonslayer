@@ -13,6 +13,7 @@ class Text:
 
 weapons = []
 tools = []
+target = []
 team = []
 
 def input_prompt(prompt, valid_res):
@@ -40,10 +41,14 @@ def fight(player_hp, target_hp):
             player_attack = randint(0, 5)
         else:
             player_attack = randint(0, 1)
+
         player_attack = min(player_attack, target_hp)
+        
         target_hp -= player_attack
+
         print("\n")
         print(f">You hit {player_attack} damage. Target has {target_hp} health left.")
+
 
         if target_hp <= 0:
             print("You won the fight.")
@@ -52,10 +57,23 @@ def fight(player_hp, target_hp):
             sleep(2)
             return True
         
+        if "prisoner" in team:
+            prisoner_attack = randint(0, 2)
+            prisoner_attack = min(prisoner_attack, target_hp)
+            target_hp -= prisoner_attack
+            print(f">Prisoner hit {prisoner_attack} damage. Target has {target_hp} health left.")
+        
         sleep(3)
-        target_attack = randint(0, 1)
+        if "dragon" in target:
+            target_attack = randint(0, 5)
+        else:
+            target_attack = randint(0, 1)
+
+        target_attack = min(target_attack, player_hp)
+
         player_hp -= target_attack
-        print(f">The target hits and does {target_attack} damage. You have {player_hp} health left.")
+
+        print(f">The target hits you and does {target_attack} damage. You have {player_hp} health left.")
         print("\n")
 
         if player_hp <= 0:
@@ -177,6 +195,8 @@ def outside():
 
 
 def neighbours_house():
+    global target
+
     print("You open the door to your neighbours house, it smells horrible in here!")
     sleep(2)
     print("You hear a ruffling noise coming from upstairs...")
@@ -185,12 +205,15 @@ def neighbours_house():
     if check_noise == 'y':
         print("You head up the creaky stairs...")
         sleep(4)
+        target.append("zombie")
         print(f"{Text.RED}A Zombie appeared!{Text.RESET}\nTime to fight!")
         if fight(player_hp = 5, target_hp = 4):
+            target.remove("zombie")
             print("You run out of the house and head for the town-square.")
             sleep(5)
             town_square()
         else:
+            target.remove("zombie")
             print("Run!")
             town_square()
     else:
@@ -326,19 +349,27 @@ def town_fountain():
 def the_bridge():
     global weapons
     global tools
+    global target
+    weapons.append("axe")
+    weapons.append("sword")
+    tools.append("matchbox")
+    tools.append("torch")
 
     print("You start making your way across the bridge.")
     sleep(2)
     print("Its quiet and still pretty dark even with your torch lit.")
     sleep(3)
+    target.append("zombie")
     print(f"{Text.RED}A Zombie appears!{Text.RESET}\nTime to fight!")
     sleep(2)
     if fight(player_hp=5, target_hp=4):
+        target.remove("zombie")
         print("You continue your way across the bridge.")
         sleep(4)
         print("Finally you arrive at the castle and it smells horrible.\nYou make your way inside.")
         the_castle()
     else:
+        target.remove("zombie")
         print("You run back to recooperate in the town sqaure.")
         sleep(3)
         town_square()
@@ -398,8 +429,26 @@ def the_castle():
 def battle_room():
     global weapons
     global team
+    global target
 
     print("You arrive in the basement and prepare to fight the dragon.\nHope your ready.")
     sleep(3)
+    target.append("dragon")
     print(f"{Text.RED}A Dragon appeared!{Text.RESET}")
     sleep(3)
+    if fight(player_hp=10, target_hp=15):
+        target.remove("dragon")
+        print("You beat the dragon!")
+        sleep(2)
+        print("You and your new friend make your way out of the castle to let the people underground know the dragon has been defeated and they can live the rest of their lives on the surface of Earth again!")
+        sleep(6)
+        os.system("cls")
+        print(f"{Text.BLUE}*** D R A G O N  S L A Y E R***{Text.RESET}")
+        print(f"{Text.CYAN}By: Jeff MacPherson")
+    else:
+        target.remove("dragon")
+        print(f"{Text.RED}Game over.{Text.RESET}")
+        sleep(2)
+        quit()
+
+the_bridge()
