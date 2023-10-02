@@ -421,6 +421,12 @@ def the_castle():
                     print("You say to the prisoner; Lets head downstairs friend.")
                     sleep(4)
                     battle_room()
+                else:
+                    print("You dont trust a prisoner enough to give him an axe.")
+                    sleep(2)
+                    print("You head towards the stairvcase to go downstairs.")
+                    sleep(4)
+                    battle_room()
             else:
                 print("You dont trust the prisoner.")
                 sleep(2)
