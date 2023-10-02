@@ -17,6 +17,7 @@ tools = []
 target = []
 team = []
 
+
 def input_prompt(prompt, valid_res):
     while True:
         user_input = input(prompt).lower()
@@ -93,9 +94,7 @@ def get_current_inventory():
     sleep(1)
 
 
-def starting_point():
-    global name
-
+def display_title():
     terminal_width = os.get_terminal_size().columns
     game_title = "*** D R A G O N   S L A Y E R ***"
     game_author = "By: Jeff MacPherson"
@@ -104,22 +103,29 @@ def starting_point():
 
     os.system("cls")
     print("\n" * 6)
-    print(" " * game_title_padding + f"{Text.CYAN}{game_title}{Text.RESET}")
+    print(" " * game_title_padding + f"{Text.RED}{game_title}{Text.RESET}")
     print("\n")
     print(" " * game_author_padding + f"{Text.BLUE}{game_author}{Text.RESET}")
     sleep(5)
     os.system("cls")
 
+
+def starting_point():
+    global name
+
+    display_title()
+
     name = input("Enter your characters name: ")
+    sleep(1)
+    os.system("cls")
+    sleep(3)
 
     bedroom()
 
 
 def bedroom():
     global weapons
-    global tools
 
-    sleep(3)
     print("You wake up, and oddly its still dark outside. The smell of smoke is in the air... \nYou hop out of bed.")
     sleep(3)
 
@@ -159,6 +165,8 @@ def downstairs():
 
 
 def kitchen():
+        global tools
+
         print("You look around your kitchen and see a matchbox laying on the kitchen table.")
         sleep(2)
         take_matchbox = input_prompt(f">Do you take the matchbox?\nType {Text.GREEN}y{Text.RESET} or {Text.GREEN}n{Text.RESET}: ", ['y', 'n'])
@@ -294,7 +302,6 @@ def general_store():
 
 def lumber_shop():
     global tools
-    global weapons
 
     print("You arrive at the Lumber Shop.")
     sleep(2)
@@ -354,8 +361,6 @@ def town_fountain():
 
 
 def the_bridge():
-    global weapons
-    global tools
     global target
 
     print("You start making your way across the bridge.")
@@ -377,10 +382,10 @@ def the_bridge():
         sleep(3)
         town_square()
 
+
 def the_castle():
     global weapons
     global team
-    weapons.append("axe")
 
     print("You walk inside the castle and notice a skeleton of what use to be a king, sitting on a charred throne.")
     sleep(2)
@@ -459,13 +464,15 @@ def battle_room():
         sleep(2)
         print("You and your new friend make your way out of the castle to let the people underground know the dragon has been defeated and they can live the rest of their lives on the surface of Earth again!")
         sleep(6)
-        os.system("cls")
-        print(f"{Text.BLUE}*** D R A G O N  S L A Y E R***{Text.RESET}")
-        print(f"{Text.CYAN}By: Jeff MacPherson")
+        end_game()
     else:
         target.remove("dragon")
         print(f"{Text.RED}Game over.{Text.RESET}")
         sleep(2)
-        quit()
+        end_game()
+
+def end_game():
+    display_title()
+    quit()
 
 starting_point()
