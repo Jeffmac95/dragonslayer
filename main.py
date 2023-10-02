@@ -1,6 +1,6 @@
 import os
-import time
-import random
+from time import sleep
+from random import randint
 
 class Text:
     RESET = "\033[0m"
@@ -13,6 +13,7 @@ class Text:
 
 weapons = []
 tools = []
+team = []
 
 def input_prompt(prompt, valid_res):
     while True:
@@ -23,21 +24,22 @@ def input_prompt(prompt, valid_res):
             get_current_inventory()
         else:
             print("Did you make a typo? Try again.")
-            time.sleep(3)
+            sleep(3)
 
 
 def fight(player_hp, target_hp):
     global weapons
+    global team
 
     print("********************")
     while player_hp > 0 and target_hp > 0:
-        time.sleep(3)
+        sleep(3)
         if "axe" in weapons:
-            player_attack = random.randint(0, 2)
+            player_attack = randint(0, 2)
         elif "sword" in weapons:
-            player_attack = random.randint(0, 5)
+            player_attack = randint(0, 5)
         else:
-            player_attack = random.randint(0, 1)
+            player_attack = randint(0, 1)
         player_attack = min(player_attack, target_hp)
         target_hp -= player_attack
         print("\n")
@@ -47,11 +49,11 @@ def fight(player_hp, target_hp):
             print("You won the fight.")
             print("\n")
             print("********************")
-            time.sleep(2)
+            sleep(2)
             return True
         
-        time.sleep(3)
-        target_attack = random.randint(0, 1)
+        sleep(3)
+        target_attack = randint(0, 1)
         player_hp -= target_attack
         print(f">The target hits and does {target_attack} damage. You have {player_hp} health left.")
         print("\n")
@@ -59,13 +61,13 @@ def fight(player_hp, target_hp):
         if player_hp <= 0:
             print("You lost the fight.")
             print("********************")
-            time.sleep(2)
+            sleep(2)
             return False
         
 
 def get_current_inventory():
     print(f"{Text.YELLOW}Weapons: {weapons}\nItems: {tools}{Text.RESET}")
-    time.sleep(1)
+    sleep(1)
 
 
 def starting_point():
@@ -82,7 +84,7 @@ def starting_point():
     print(" " * game_title_padding + f"{Text.CYAN}{game_title}{Text.RESET}")
     print("\n")
     print(" " * game_author_padding + f"{Text.BLUE}{game_author}{Text.RESET}")
-    time.sleep(5)
+    sleep(5)
     os.system("cls")
 
     bedroom()
@@ -92,108 +94,108 @@ def bedroom():
     global weapons
     global tools
 
-    time.sleep(3)
+    sleep(3)
     print("You wake up, and oddly its still dark outside. The smell of smoke is in the air... \nYou hop out of bed.")
-    time.sleep(3)
+    sleep(3)
 
     print("You see an axe laying up against the wall.")
-    time.sleep(2)
+    sleep(2)
     take_axe = input_prompt(f">Take Axe?\nType {Text.GREEN}y{Text.RESET} or {Text.GREEN}n{Text.RESET}: ", ['y', 'n'])
     if take_axe == 'y':
         weapons.append("axe")
         print(f"{Text.MAGENTA}>Axe was added to your inventory.{Text.RESET}")
-        time.sleep(1)
+        sleep(1)
         print(f"Type {Text.YELLOW}inv{Text.RESET} at anytime to see your current inventory.")
-        time.sleep(2)
+        sleep(2)
         go_downstairs = input_prompt(f"You should head downstairs now.\nType {Text.GREEN}go{Text.RESET}: ", ["go"])
         if go_downstairs == "go":
-            time.sleep(2)
+            sleep(2)
             downstairs()
     else:
         print("Ok. If you dont think you'll need it.")
         print("You head downstairs.")
-        time.sleep(2)
+        sleep(2)
         downstairs()
 
 
 def downstairs():
         print("You're downstairs and its deadly quiet... You see your frontdoor ajar.\nDo you:")
-        time.sleep(2)
+        sleep(2)
         print(f">Go {Text.GREEN}left{Text.RESET} to search the kitchen first for possible supplies?\n-or-\n>Go {Text.GREEN}right{Text.RESET} in a panic and head straight outside to assess the situation?")
         direction = input_prompt(f"Type {Text.GREEN}left {Text.RESET}or {Text.GREEN}right{Text.RESET}: ", ["left", "right"])
         if direction == "left":
             print("You head into the kitchen.")
-            time.sleep(2)
+            sleep(2)
             kitchen()
         else:
             print("You frantically run out your frontdoor")
-            time.sleep(3)
+            sleep(3)
             outside()
 
 
 def kitchen():
         print("You look around your kitchen and see a matchbox laying on the kitchen table.")
-        time.sleep(2)
+        sleep(2)
         take_matchbox = input_prompt(f">Do you take the matchbox?\nType {Text.GREEN}y{Text.RESET} or {Text.GREEN}n{Text.RESET}: ", ['y', 'n'])
         if take_matchbox == 'y':
             tools.append("matchbox")
             print(f"{Text.MAGENTA}>Matchbox was added to your inventory.{Text.RESET}")
-            time.sleep(2)
+            sleep(2)
             print(f"Type {Text.YELLOW}inv{Text.RESET} at anytime to see your current inventory.")
-            time.sleep(3)
+            sleep(3)
             print("You should head outside now.")
             go_outside = input_prompt(f"Type {Text.GREEN}go{Text.RESET}: ", ["go"])
             if go_outside == "go":
-                time.sleep(3)
+                sleep(3)
                 outside()
         else:
             print("Ok. If you dont think you'll need it.")
             print("You head for your front-door to go check outside.")
-            time.sleep(2)
+            sleep(2)
             outside()
-            time.sleep(4)
+            sleep(4)
 
 
 def outside():
     print("You step outside. The sky is filled with smoke, with no sign of the sun.. or people. The air smells of burning wood and everything is scortched and black.")
-    time.sleep(2)
+    sleep(2)
     print("You look to the left and see your neighbours door wide-open.")
-    time.sleep(2)
+    sleep(2)
     print("You look to the right and see smoke burning from the town square.")
-    time.sleep(2)
+    sleep(2)
     print(f"Do you:\n>Go {Text.GREEN}left{Text.RESET} and check on your neighbour?\n-or-\n>Go {Text.GREEN}right{Text.RESET} and head straight for the city?")
-    time.sleep(2)
+    sleep(2)
     direction = input_prompt(f"Type {Text.GREEN}left{Text.RESET} or {Text.GREEN}right{Text.RESET}: ", ["left", "right"])
     if direction == "left":
-        time.sleep(2)
+        sleep(2)
         neighbours_house()
     else:
-        time.sleep(2)
+        sleep(2)
         print("You head for the town square.")
-        time.sleep(5)
+        sleep(5)
         town_square()
 
 
 def neighbours_house():
     print("You open the door to your neighbours house, it smells horrible in here!")
-    time.sleep(2)
+    sleep(2)
     print("You hear a ruffling noise coming from upstairs...")
-    time.sleep(1)
+    sleep(1)
     check_noise = input_prompt(f">Do you go check out the noise?\nType {Text.GREEN}y{Text.RESET} or {Text.GREEN}n{Text.RESET}: ", ['y', 'n'])
     if check_noise == 'y':
         print("You head up the creaky stairs...")
-        time.sleep(4)
+        sleep(4)
         print(f"{Text.RED}A Zombie appeared!{Text.RESET}\nTime to fight!")
         if fight(player_hp = 5, target_hp = 4):
             print("You run out of the house and head for the town-square.")
-            time.sleep(5)
+            sleep(5)
             town_square()
         else:
             print("Run!")
             town_square()
     else:
         print("You turn around and head towards the town square instead.")
-        time.sleep(4)
+        sleep(4)
         town_square()
 
 
@@ -201,35 +203,35 @@ def town_square():
     global tools
 
     if "matchbox" and "torch" in tools:
-        time.sleep(4)
+        sleep(4)
         print("You arrive back in the town square with the proper stuff this time.")
         print(">You light the torch and make your way across the bridge")
-        time.sleep(2)
+        sleep(2)
         the_bridge()
     else:
         print("You arrive in town square.")
-        time.sleep(2)
+        sleep(2)
         print("Everything's charred, with some buildings still slightly burning. And no sign of any people around.")
-        time.sleep(5)
+        sleep(5)
         print("You suddenly realize the castle lights are on straight ahead.")
-        time.sleep(2)
+        sleep(2)
         print("But before heading to the castle, you might want to look around first for a lightsource to get across the bridge safely.")
-        time.sleep(5)
+        sleep(5)
         print(f">You look {Text.GREEN}left{Text.RESET} and see a path with a Lumber Shop.\n>You look to the {Text.GREEN}right{Text.RESET} and see a path with an abandoned General Store.")
         direction = input_prompt(f"Type {Text.GREEN}left{Text.RESET} or {Text.GREEN}right{Text.RESET}: ", ['left', 'right'])
         if direction == "left":
             if "key" not in tools:
-                time.sleep(1)
+                sleep(1)
                 print("The door is locked. Maybe I should look for a key.")
-                time.sleep(2)
+                sleep(2)
                 print("You walk over to the right to check out the General Store.")
-                time.sleep(5)
+                sleep(5)
                 general_store()
             else:
                 lumber_shop()
         else:
             print("You make your way to the General Store.")
-            time.sleep(4)
+            sleep(4)
             general_store()
 
 
@@ -241,22 +243,22 @@ def general_store():
     if take_potion == 'y':
         tools.append("health potion")
         print(f"{Text.MAGENTA}>Health Potion was added to your inventory.{Text.RESET}")
-        time.sleep(3)
+        sleep(3)
     else:
         print("Ok. If you dont think you'll need it.")
-        time.sleep(2)
+        sleep(2)
     print("You look around and notice a trap-door that leads to the basement.")
     general_store_basement = input_prompt(f">To go to the basement\nType {Text.GREEN}go{Text.RESET}: ", ["go"])
     if general_store_basement == "go":
         print("You head down to the basement and look around for anything useful...")
-        time.sleep(6)
+        sleep(6)
         print("You find a key!")
-        time.sleep(2)
+        sleep(2)
         tools.append("key")
         print(f"{Text.MAGENTA}>Key was added to your inventory.{Text.RESET}")
-        time.sleep(2)
+        sleep(2)
     print("You head back upstairs and out of the General Store to try the key at the lumber shop.")
-    time.sleep(4)
+    sleep(4)
     lumber_shop()
 
 
@@ -265,32 +267,32 @@ def lumber_shop():
     global weapons
 
     print("You arrive at the Lumber Shop.")
-    time.sleep(2)
+    sleep(2)
     print("If you have a key the door should open.")
-    time.sleep(2)
+    sleep(2)
     print(f"Remeber, you can type {Text.YELLOW}inv{Text.RESET} at any time to see your current inventory.")
     shall_you_pass = input_prompt(f"Type {Text.GREEN}unlock{Text.RESET}: ", ["unlock"])
     print("You turn the key...")
-    time.sleep(2)
+    sleep(2)
     if shall_you_pass == "unlock":
         if "key" in tools:
             print(f"{Text.CYAN}*click*{Text.RESET}")
-            time.sleep(2)
+            sleep(2)
             print("You enter the Lumber Shop.")
-            time.sleep(3)
+            sleep(3)
             print("You look around for a stick to act as a torch.")
-            time.sleep(4)
+            sleep(4)
             print("You find a decent looking stick.")
-            time.sleep(1)
+            sleep(1)
             tools.append("torch")
             print(f"{Text.MAGENTA}>Torch was added to your inventory.{Text.RESET}")
-            time.sleep(2)
+            sleep(2)
             print("You head back to the town sqaure to make your way across the bridge.")
-            time.sleep(4)
+            sleep(4)
             town_fountain()
         else:
             print("It doesnt work. Back to the General Store you go.")
-            time.sleep(4)
+            sleep(4)
             general_store()
 
 def town_fountain():
@@ -298,25 +300,25 @@ def town_fountain():
     global tools
 
     print("You arrive back in the town square and make your way to the bridge that leads to the castle.")
-    time.sleep(2)
+    sleep(2)
     print("But something catches your eye in the fountain, in the middle of the square.")
-    time.sleep(2)
+    sleep(2)
     print("Its a sword!")
-    time.sleep(1)
+    sleep(1)
     weapons.append("sword")
     print(f"{Text.MAGENTA}>Sword was added to your inventory.{Text.RESET}")
-    time.sleep(2)
+    sleep(2)
     print("You notice strange writing on the side of the blade but cant understand the language. And on the other side, a picture of a dragon?")
-    time.sleep(1)
+    sleep(1)
     print("You feel a lot stronger with this.")
-    time.sleep(2)
+    sleep(2)
     if "matchbox" in tools:
         print("You make your way towards the bridge")
-        time.sleep(5)
+        sleep(5)
         the_bridge()
     else:
         print("You have nothing to light your stick with.\nBack to your house to check the kitchen!")
-        time.sleep(5)
+        sleep(5)
         kitchen()
 
 
@@ -324,28 +326,80 @@ def town_fountain():
 def the_bridge():
     global weapons
     global tools
-    tools.append("matchbox")
-    tools.append("torch")
-    weapons.append("sword")
 
     print("You start making your way across the bridge.")
-    time.sleep(2)
+    sleep(2)
     print("Its quiet and still pretty dark even with your torch lit.")
-    time.sleep(3)
+    sleep(3)
     print(f"{Text.RED}A Zombie appears!{Text.RESET}\nTime to fight!")
-    time.sleep(2)
+    sleep(2)
     if fight(player_hp=5, target_hp=4):
         print("You continue your way across the bridge.")
-        time.sleep(4)
+        sleep(4)
         print("Finally you arrive at the castle and it smells horrible.\nYou make your way inside.")
         the_castle()
     else:
         print("You run back to recooperate in the town sqaure.")
-        time.sleep(3)
+        sleep(3)
         town_square()
 
 def the_castle():
+    global weapons
+    global team
+
     print("You walk inside the castle and notice a skeleton of what use to be a king, sitting on a charred throne.")
+    sleep(2)
+    print("You hear a loud thumping noise coming from the dungeon below your feet.")
+    sleep(2)
+    print("You make your way down the spiral staircase towards the dungeons...")
+    sleep(5)
+    print("You arrive in the jail cells of the castle.\nDo you walk down the corridor to explore the cells or go to the bottom floor.")
+    direction = input_prompt(f"Type {Text.GREEN}explore{Text.RESET} or {Text.GREEN}go{Text.RESET}: ", ["explore", "go"])
+    if direction == "explore":
+        print("You make your way down the hallway looking in the cells...")
+        sleep(4)
+        print("For the first time you notice a person!")
+        sleep(1)
+        print("You attempt to talk to the person whos sleeping in one of the cells.")
+        sleep(2)
+        print("The stranger tells you about the dragon that came to the town and burned everything and almost everyone...\nAlmost everyone that survived made underground bunkers 10 feet under the dirt.\nHe also mentions the dragon is locked in the basement of the castle but may be hard to beat by yourself.")
+        sleep(4)
+        if "axe" in weapons:
+            print("Maybe you can free the prisoner with a swing of your axe.")
+            print(f"{Text.CYAN}>You swing your axe and free the prisoner!{Text.RESET}")
+            print("The prisoner thanks you for freeing him.\nHe's willing to help you fight the dragon if you would give him your axe...")
+            sleep(1)
+            print("Do you give your >Axe to the stranger?")
+            give_axe = input_prompt(f"Type {Text.GREEN}y{Text.RESET} or {Text.GREEN}n{Text.RESET}: ", {'y', 'n'})
+            if give_axe == 'y':
+                weapons.remove("axe")
+                print(f"{Text.RED}>You give the stranger your axe.{Text.RESET}")
+                team.append("prisoner")
+                print(f"{Text.YELLOW}>The prisoner joins your team.{Text.RESET}")
+                sleep(2)
+                print("You say to the prisoner; Lets head downstairs friend.")
+                sleep(4)
+                battle_room()
+            else:
+                print("You dont trust the prisoner.\nHe thanks you for freeing him and makes his way upstairs.")
+                print("You head towards the staircase to go downstairs.")
+                sleep(4)
+                battle_room()
+        else:
+            print("With no way to free the prisoner, you turn and head towards the staircase leading to the basement...")
+            sleep(4)
+            battle_room()
+    else:
+        print("You make your way down the spiral staircase.")
+        sleep(4)
+        battle_room()
 
 
-starting_point()
+def battle_room():
+    global weapons
+    global team
+
+    print("You arrive in the basement and prepare to fight the dragon.\nHope your ready.")
+    sleep(3)
+    print(f"{Text.RED}A Dragon appeared!{Text.RESET}")
+    sleep(3)
