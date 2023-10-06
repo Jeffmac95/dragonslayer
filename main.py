@@ -54,6 +54,7 @@ def fight(player_hp, target_hp):
 
         if target_hp <= 0:
             print("\n")
+            sleep(2)
             print(f"{Text.GREEN}You won the fight.{Text.RESET}")
             print("\n")
             print("********************")
@@ -76,12 +77,14 @@ def fight(player_hp, target_hp):
 
         player_hp -= target_attack
 
+        print("\n")
         print(f">The target hits you and does {target_attack} damage. You have {player_hp} health left.")
         print("\n")
 
         if player_hp <= 5 and "health potion" in tools:
             sleep(2)
             player_hp += 6
+            tools.remove("health potion")
             print(f">{Text.GREEN}You drink your health potion for 6 hitpoints.{Text.RESET}\nYour hitpoints is now: {Text.GREEN}{player_hp}{Text.RESET}.")
             sleep(2)
             
@@ -117,6 +120,7 @@ def display_title():
 def starting_point():
     global name
 
+
     display_title()
 
     name = input("Enter your characters name: ")
@@ -129,6 +133,7 @@ def starting_point():
 
 def bedroom():
     global weapons
+
 
     print("You wake up, and oddly its still dark outside. The smell of smoke is in the air... \nYou hop out of bed.")
     sleep(3)
@@ -156,11 +161,11 @@ def bedroom():
 def downstairs():
         print("You're downstairs and its deadly quiet... You see your frontdoor ajar.\nDo you:")
         sleep(2)
-        print(f">Go {Text.GREEN}left{Text.RESET} to search the kitchen first for possible supplies?\n-or-\n>Go {Text.GREEN}right{Text.RESET} in a panic and head straight outside to assess the situation?")
+        print(f">Go {Text.GREEN}left{Text.RESET} to search the kitchen first for possible supplies? or,\n>Go {Text.GREEN}right{Text.RESET} in a panic and head straight outside to assess the situation?")
         direction = input_prompt(f"Type {Text.GREEN}left {Text.RESET}or {Text.GREEN}right{Text.RESET}: ", ["left", "right"])
         if direction == "left":
             print("You head into the kitchen.")
-            sleep(2)
+            sleep(3)
             kitchen()
         else:
             print("You frantically run out your frontdoor")
@@ -171,14 +176,13 @@ def downstairs():
 def kitchen():
         global tools
 
+
         print("You look around your kitchen and see a matchbox laying on the kitchen table.")
-        sleep(2)
-        take_matchbox = input_prompt(f">Do you take the matchbox?\nType {Text.GREEN}y{Text.RESET} or {Text.GREEN}n{Text.RESET}: ", ['y', 'n'])
+        sleep(1)
+        take_matchbox = input_prompt(f">Take the matchbox?\nType {Text.GREEN}y{Text.RESET} or {Text.GREEN}n{Text.RESET}: ", ['y', 'n'])
         if take_matchbox == 'y':
             tools.append("matchbox")
             print(f"{Text.MAGENTA}>Matchbox was added to your inventory.{Text.RESET}")
-            sleep(2)
-            print(f"Type {Text.YELLOW}inv{Text.RESET} at anytime to see your current inventory.")
             sleep(3)
             print("You should head outside now.")
             go_outside = input_prompt(f"Type {Text.GREEN}go{Text.RESET}: ", ["go"])
@@ -188,9 +192,8 @@ def kitchen():
         else:
             print("Ok. If you dont think you'll need it.")
             print("You head for your front-door to go check outside.")
-            sleep(2)
+            sleep(5)
             outside()
-            sleep(4)
 
 
 def outside():
@@ -215,6 +218,8 @@ def outside():
 
 def neighbours_house():
     global target
+    global tools
+
 
     print("You open the door to your neighbours house, it smells horrible in here!")
     sleep(2)
@@ -225,9 +230,13 @@ def neighbours_house():
         print("You head up the creaky stairs...")
         sleep(4)
         target.append("zombie")
-        print(f"{Text.RED}A Zombie appeared!{Text.RESET}\nTime to fight!")
+        print(f"{Text.RED}A Zombie appeared!{Text.RESET}")
         if fight(player_hp = 5, target_hp = 4):
             target.remove("zombie")
+            sleep(2)
+            tools.append("health potion")
+            print(f"{Text.MAGENTA}>Health Potion was added to your inventory.{Text.RESET}")
+            sleep(3)
             print("You run out of the house and head for the town-square.")
             sleep(5)
             town_square()
@@ -244,6 +253,7 @@ def neighbours_house():
 def town_square():
     global tools
 
+
     if "matchbox" and "torch" in tools:
         sleep(4)
         print("You arrive back in the town square with the proper stuff this time.")
@@ -254,12 +264,15 @@ def town_square():
         print("You arrive in town square.")
         sleep(2)
         print("Everything's charred, with some buildings still slightly burning. And no sign of any people around.")
-        sleep(5)
+        sleep(4)
         print("You suddenly realize the castle lights are on straight ahead.")
-        sleep(2)
-        print("But before heading to the castle, you might want to look around first for a lightsource to get across the bridge safely.")
+        sleep(3)
+        print("But before heading to the castle, you might want to look around for a lightsource first, to get across the bridge safely.")
         sleep(5)
-        print(f">You look {Text.GREEN}left{Text.RESET} and see a path with a Lumber Shop.\n>You look to the {Text.GREEN}right{Text.RESET} and see a path with an abandoned General Store.")
+        print(f">You look {Text.GREEN}left{Text.RESET} and see a path with a Lumber Shop.")
+        sleep(2)
+        print(f">You look to the {Text.GREEN}right{Text.RESET} and see a path with an abandoned General Store.")
+        sleep(1)
         direction = input_prompt(f"Type {Text.GREEN}left{Text.RESET} or {Text.GREEN}right{Text.RESET}: ", ['left', 'right'])
         if direction == "left":
             if "key" not in tools:
@@ -280,15 +293,20 @@ def town_square():
 def general_store():
     global tools
 
-    print("You arrive at the General Store and immediately notice a vial containing red liquid on the shelf behind the front-counter.")
+
+    print("You arrive at the General Store.")
+    sleep(3)
+    print("You look around and notice a vial of red liquid on the shelf behind the frontcounter.")
+    sleep(2)
     take_potion = input_prompt(f">Take the Health Potion?\nType {Text.GREEN}y{Text.RESET} or {Text.GREEN}n{Text.RESET}: ", ['y', 'n'])
     if take_potion == 'y':
         tools.append("health potion")
         print(f"{Text.MAGENTA}>Health Potion was added to your inventory.{Text.RESET}")
-        sleep(3)
+        sleep(2)
     else:
         print("Ok. If you dont think you'll need it.")
         sleep(2)
+    
     print("You look around and notice a trap-door that leads to the basement.")
     general_store_basement = input_prompt(f">To go to the basement\nType {Text.GREEN}go{Text.RESET}: ", ["go"])
     if general_store_basement == "go":
@@ -306,6 +324,7 @@ def general_store():
 
 def lumber_shop():
     global tools
+
 
     print("You arrive at the Lumber Shop.")
     sleep(2)
@@ -336,9 +355,11 @@ def lumber_shop():
             sleep(4)
             general_store()
 
+
 def town_fountain():
     global weapons
     global tools
+
 
     print("You arrive back in the town square and make your way to the bridge that leads to the castle.")
     sleep(2)
@@ -367,6 +388,7 @@ def town_fountain():
 def the_bridge():
     global target
 
+
     print("You start making your way across the bridge.")
     sleep(2)
     print("Its quiet and still pretty dark even with your torch lit.")
@@ -390,6 +412,7 @@ def the_bridge():
 def the_castle():
     global weapons
     global team
+
 
     print("You walk inside the castle and notice a skeleton of what use to be a king, sitting on a charred throne.")
     sleep(2)
@@ -457,12 +480,13 @@ def battle_room():
     global team
     global target
 
+
     print("You arrive in the basement and prepare to fight the dragon.\nHope your ready.")
     sleep(3)
     target.append("dragon")
     print(f"{Text.RED}A Dragon appeared!{Text.RESET}")
     sleep(3)
-    if fight(player_hp=10, target_hp=15):
+    if fight(player_hp=10, target_hp=99):
         target.remove("dragon")
         print("You beat the dragon!")
         sleep(2)
@@ -475,8 +499,11 @@ def battle_room():
         sleep(2)
         end_game()
 
+
 def end_game():
     display_title()
     quit()
+
+
 
 starting_point()
