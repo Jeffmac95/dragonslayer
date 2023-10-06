@@ -53,7 +53,8 @@ def fight(player_hp, target_hp):
 
 
         if target_hp <= 0:
-            print("You won the fight.")
+            print("\n")
+            print(f"{Text.GREEN}You won the fight.{Text.RESET}")
             print("\n")
             print("********************")
             sleep(2)
@@ -79,7 +80,7 @@ def fight(player_hp, target_hp):
         print("\n")
 
         if player_hp <= 0:
-            print("You lost the fight.")
+            print(f"{Text.RED}You lost the fight.{Text.RESET}")
             print("********************")
             sleep(2)
             return False
@@ -393,7 +394,7 @@ def the_castle():
     sleep(2)
     print("You make your way down the spiral staircase towards the dungeons...")
     sleep(5)
-    print("You arrive in the middle floor. Appears to be the prison of the castle.\nDo you: walk down the corridor to explore the cells or go to the bottom floor.")
+    print(f"You arrive in the middle floor. Appears to be the prison of the castle.\nDo you: walk down the corridor to {Text.GREEN}explore{Text.RESET} the cells or {Text.GREEN}go{Text.RESET} to the bottom floor.")
     direction = input_prompt(f"Type {Text.GREEN}explore{Text.RESET} or {Text.GREEN}go{Text.RESET}: ", ["explore", "go"])
     if direction == "explore":
         print("You make your way down the hallway looking in the cells...")
