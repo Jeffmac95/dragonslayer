@@ -79,15 +79,18 @@ def fight(player_hp, target_hp):
         print(f">The target hits you and does {target_attack} damage. You have {player_hp} health left.")
         print("\n")
 
+        if player_hp <= 5 and "health potion" in tools:
+            sleep(2)
+            player_hp += 6
+            print(f">{Text.GREEN}You drink your health potion for 6 hitpoints.{Text.RESET}\nYour hitpoints is now: {Text.GREEN}{player_hp}{Text.RESET}.")
+            sleep(2)
+            
+
         if player_hp <= 0:
             print(f"{Text.RED}You lost the fight.{Text.RESET}")
             print("********************")
             sleep(2)
             return False
-
-        #if "health potion" in tools and player_hp <= 5:
-            #print(">You drink the health potion")
-            #player_hp += n
         
 
 def get_current_inventory():
