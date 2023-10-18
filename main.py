@@ -63,8 +63,16 @@ def fight(player_hp, target_hp):
             reds_attack = min(reds_attack, target_hp)
             target_hp -= reds_attack
             print(f">Prisoner hit {reds_attack} damage. Target has {target_hp} health left.")
+
+        if player_hp <= 5 and "health potion" in tools:
+            sleep(2)
+            player_hp += 6
+            tools.remove("health potion")
+            print(f">{Text.GREEN}You drink your health potion for +6 hitpoints.{Text.RESET}\nYour hitpoints is now: {Text.GREEN}{player_hp}{Text.RESET}.")
+            sleep(2)
         
         sleep(3)
+
         if "dragon" in target:
             target_attack = randint(0, 5)
         else:
@@ -75,15 +83,7 @@ def fight(player_hp, target_hp):
         print("\n")
         print(f">The target hits you and does {target_attack} damage. You have {player_hp} health left.")
         print("\n")
-
-        if player_hp <= 5 and "health potion" in tools:
-            sleep(2)
-            player_hp += 6
-            tools.remove("health potion")
-            print(f">{Text.GREEN}You drink your health potion for +6 hitpoints.{Text.RESET}\nYour hitpoints is now: {Text.GREEN}{player_hp}{Text.RESET}.")
-            sleep(2)
             
-
         if player_hp <= 0:
             print(f"{Text.RED}You lost the fight.{Text.RESET}")
             print("********************")
@@ -144,8 +144,6 @@ def bedroom():
     if take_axe == 'y':
         weapons.append("axe")
         print(f"{Text.MAGENTA}>Axe was added to your inventory.{Text.RESET}")
-        sleep(1)
-        print(f"Type {Text.YELLOW}inv{Text.RESET} at anytime to see your current inventory.")
         sleep(2)
         go_downstairs = input_prompt(f"You should head downstairs now.\nType {Text.GREEN}go{Text.RESET}: ", ["go"])
         if go_downstairs == "go":
@@ -520,8 +518,12 @@ def battle_room():
 
 
 def end_game():
-    display_title()
-    quit()
+    print("\n" * 6)
+    exit_ = input_prompt(f"Type {Text.GREEN}quit{Text.RESET} to exit: ", ["quit"])
+    if exit_ == "quit":
+        display_title()
+        quit()
+
 
 
 
