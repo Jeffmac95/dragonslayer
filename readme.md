@@ -1,1 +1,1 @@
-Just a fun project I started on the fly one morning. I always enjoyed text-based games wehn I was younger, so thought it would be fun to make my own, and also get more practice writing code.
+Just a small project I started for fun on the fly one morning. I always enjoyed text-based games when I was younger, so thought it would be fun to make my own. And also get more practice writing code.
